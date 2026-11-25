@@ -215,7 +215,7 @@ Das aktuelle Compose-Plugin unterstützt auch:
 docker compose up --build
 ```
 
-[http://localhost:8501](http://localhost:8501) öffnen, **System topology** wählen, die aktiven Modelle konfigurieren und **Run Simulation** anklicken. Ein Topologiewechsel aktualisiert die Eingaben und blendet veraltete Ergebnisse einer anderen Topologie bis zu einer erfolgreichen neuen Berechnung aus. Der Container verwendet Python 3.10 slim, einen Benutzer ohne Root-Rechte, eine Zustandsprüfung und eine ausschließlich lokale Portbindung.
+[http://localhost:8502](http://localhost:8502) öffnen, **System topology** wählen, die aktiven Modelle konfigurieren und **Run Simulation** anklicken. Ein Topologiewechsel aktualisiert die Eingaben und blendet veraltete Ergebnisse einer anderen Topologie bis zu einer erfolgreichen neuen Berechnung aus. Der Container verwendet Python 3.10 slim, einen Benutzer ohne Root-Rechte, eine Zustandsprüfung und eine ausschließlich lokale Portbindung.
 
 ```bash
 docker compose up --build -d

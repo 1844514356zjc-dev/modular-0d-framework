@@ -63,7 +63,7 @@ jobs:
       - name: Build and start healthy service
         run: docker compose up --build --detach --wait --wait-timeout 180
       - name: Check HTTP readiness
-        run: curl --fail --silent --show-error http://127.0.0.1:8501/_stcore/health
+        run: curl --fail --silent --show-error http://127.0.0.1:8502/_stcore/health
       - name: Exercise engine and scavenging calculation inside the container
         run: |
           docker compose exec -T modular-0d-framework python - <<'PYCODE'

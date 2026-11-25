@@ -272,7 +272,7 @@ The current Compose plugin supports:
 docker compose up --build
 ```
 
-Open [http://localhost:8501](http://localhost:8501), select **System topology**,
+Open [http://localhost:8502](http://localhost:8502), select **System topology**,
 configure the active models, then press **Run Simulation**. Switching topology
 refreshes controls and hides another topology's stale results until a new run
 succeeds. The container uses Python 3.10 slim, a non-root runtime, a health check,
