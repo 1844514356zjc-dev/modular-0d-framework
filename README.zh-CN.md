@@ -2,6 +2,8 @@
 
 [中文](README.zh-CN.md) · [English](README.md) · [日本語](README.ja.md) · [Deutsch](README.de.md)
 
+本仓库仅包含动态发动机与气体交换模型。稳态布雷顿/朗肯循环与㶲分析位于独立仓库 [Thermo Cycles](https://github.com/1844514356zjc-dev/thermo-cycles)。
+
 **面向机械与热系统科研的可组合零维热力学、变容积机构与气体交换仿真框架。**
 
 Python 3.10+ · NumPy / SciPy · CoolProp · Streamlit / Plotly · MIT 许可证
@@ -16,7 +18,6 @@ Python 3.10+ · NumPy / SciPy · CoolProp · Streamlit / Plotly · MIT 许可证
 - **热源注入**：支持归一化周期 Wiebe 放热、无热源及带符号的奥托等容热脉冲。自定义热源实现 `heat_release(theta) -> J/rad`。
 - **守恒诊断**：使用隐式 `Radau` / `BDF` 积分，监测压力与状态方程的一致性；带符号的通道流量及累计热量、功、焓交换与物理状态同步积分。
 - **交互式科研工作台**：按拓扑展示控件、相位分辨曲线、SI 悬停数据、双对数 P–V 图、转速/压缩比扫描，以及与计算快照一致的 CSV / JSON 导出。
-- **配套真实流体循环**：保留基于 CoolProp 的布雷顿/朗肯实验室，入口为 `src/ui/real_fluid_app.py`。
 
 ![模块化仿真工作台](engine-dashboard.png)
 
@@ -169,13 +170,10 @@ src/
 │   ├── working_fluids.py    # Property ABC, IdealGas, CoolPropGas, EOS snapshots
 │   ├── heat_models.py       # Heat-source protocol, Wiebe/Otto/no-heat, Woschni
 │   ├── engine_solver.py     # EngineConfig, shared EngineSimulator, legacy API
-│   ├── scavenging_model.py  # Standalone geometry and species metrics
-│   └── cycle_solver.py      # Companion CoolProp Brayton/Rankine calculations
+│   └── scavenging_model.py  # Standalone geometry and species metrics
 └── ui/
     ├── app.py               # English topology-dependent Streamlit controls
-    ├── engine_dashboard.py  # Composition factory, tracer, plots, reports
-    ├── real_fluid_app.py    # Preserved companion-cycle interface
-    └── dashboard.py         # Companion-cycle plots and reporting
+    └── engine_dashboard.py  # Composition factory, tracer, plots, reports
 ```
 
 核心不导入 Streamlit 或 Plotly。`EngineSimulator` 接受 `EngineConfig` 或嵌套 SI 字典，也可直接构造各部件。`OpposedPistonEngineCycle` 及原始 `Port` API 通过适配层保留。
@@ -231,7 +229,7 @@ docker compose down
 python3.10 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
-python -m pip install -c requirements/validation-constraints.txt -e '.[ui,dev,benchmark]'
+python -m pip install -c requirements/validation-constraints.txt -e '.[ui,dev]'
 python -m streamlit run src/ui/app.py
 ```
 
@@ -243,15 +241,14 @@ PowerShell 激活命令为 `.venv\Scripts\Activate.ps1`。带哈希的运行依�
 
 CSV 列名包含单位。JSON 包含拓扑、物性模型、初始状态、假设、累计能量收支、组分评估区间及匹配的扫描元数据。下载按钮不会重新执行数值仿真。
 
-设置环境变量 `GITHUB_REPOSITORY_URL` 为已发布仓库的 HTTPS 地址后，页面顶部 GitHub 标识将成为仓库链接；未设置时仅静态显示。真实流体循环界面可单独运行：`python -m streamlit run src/ui/real_fluid_app.py`。
+[Thermo Cycles — Brayton / Rankine](https://github.com/1844514356zjc-dev/thermo-cycles)
 
 ### 验证与持续集成
 
 ```bash
-python -m flake8 src tests benchmarks examples --count --show-source --statistics
+python -m flake8 src tests examples --count --show-source --statistics
 python -m pytest -ra --strict-config --strict-markers
 PYTHONPATH=src python examples/solve_modular.py
-python benchmarks/validate_literature.py
 ```
 
 GitHub Actions 在 push / PR 时对 Python 3.10、3.12、3.14 运行检查，随后执行容器健康与计算冒烟测试。验证覆盖机构导数、气门周期、喷嘴阻塞/倒流、混合边界、封闭气体不变量、CoolProp 导数与熵一致性、奥托解析效率、旧接口兼容性及拓扑相关 UI 行为。
@@ -276,4 +273,6 @@ GitHub Actions 在 push / PR 时对 Python 3.10、3.12、3.14 运行检查，随
 4. MIT 2.61, [Gas Exchange Processes](https://web.mit.edu/2.61/www/Lecture%20notes/Lec.%2008%20Gas%20exchange%20processes.pdf).
 5. CoolProp, [Low-Level API and thermodynamic derivatives](https://coolprop.org/coolprop/LowLevelAPI.html).
 
-采用 [MIT 许可证](LICENSE)。科研使用时应记录源码提交、依赖版本、完整配置和模型假设。当前没有软件 DOI，也不代表任何机构背书。历史配套实验室文档保留于 [docs/real-fluid-laboratory.md](docs/real-fluid-laboratory.md)。
+[Thermo Cycles — Brayton / Rankine](https://github.com/1844514356zjc-dev/thermo-cycles)
+
+[MIT License](LICENSE) · [Project separation](docs/project-separation.md)

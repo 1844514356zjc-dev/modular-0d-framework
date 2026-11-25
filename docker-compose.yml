@@ -1,5 +1,5 @@
 services:
-  thermo-cycles:
+  modular-0d-framework:
     build:
       context: .
       dockerfile: Dockerfile

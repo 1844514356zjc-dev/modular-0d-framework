@@ -2,6 +2,10 @@
 
 [中文](README.zh-CN.md) · [English](README.md) · [日本語](README.ja.md) · [Deutsch](README.de.md)
 
+This repository contains dynamic engine and gas-exchange models only.
+Steady-state Brayton/Rankine and exergy analysis are maintained separately in
+[Thermo Cycles](https://github.com/1844514356zjc-dev/thermo-cycles).
+
 **Composable thermodynamics, moving-volume mechanisms, and gas-exchange models
 for mechanical and thermal-system research.**
 
@@ -34,8 +38,6 @@ without changing the core equations.
 - **Interactive research workspace:** topology-specific controls, phase-resolved
   plots, SI hover values, log P–V axes, RPM/compression-ratio studies, and
   snapshot-consistent CSV/JSON exports.
-- **Companion real-fluid cycles:** the preserved CoolProp Brayton/Rankine
-  laboratory remains available through `src/ui/real_fluid_app.py`.
 
 ![Modular framework dashboard](engine-dashboard.png)
 
@@ -220,13 +222,10 @@ src/
 │   ├── working_fluids.py    # Property ABC, IdealGas, CoolPropGas, EOS snapshots
 │   ├── heat_models.py       # Heat-source protocol, Wiebe/Otto/no-heat, Woschni
 │   ├── engine_solver.py     # EngineConfig, shared EngineSimulator, legacy API
-│   ├── scavenging_model.py  # Standalone geometry and species metrics
-│   └── cycle_solver.py      # Companion CoolProp Brayton/Rankine calculations
+│   └── scavenging_model.py  # Standalone geometry and species metrics
 └── ui/
     ├── app.py               # English topology-dependent Streamlit controls
-    ├── engine_dashboard.py  # Composition factory, tracer, plots, reports
-    ├── real_fluid_app.py    # Preserved companion-cycle interface
-    └── dashboard.py         # Companion-cycle plots and reporting
+    └── engine_dashboard.py  # Composition factory, tracer, plots, reports
 ```
 
 The core never imports Streamlit or Plotly. `EngineSimulator` accepts either
@@ -291,7 +290,7 @@ For local Python development:
 python3.10 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
-python -m pip install -c requirements/validation-constraints.txt -e '.[ui,dev,benchmark]'
+python -m pip install -c requirements/validation-constraints.txt -e '.[ui,dev]'
 python -m streamlit run src/ui/app.py
 ```
 
@@ -314,17 +313,14 @@ assumptions, cumulative energy budgets, species assessment bounds, and matching
 sweep metadata. Download buttons do not rerun the numerical simulation.
 
 The header's GitHub badge becomes a repository link when
-`GITHUB_REPOSITORY_URL` is set to the published HTTPS GitHub URL. Without it,
-the badge is static. The separate real-fluid app can be started with
-`python -m streamlit run src/ui/real_fluid_app.py`.
+`GITHUB_REPOSITORY_URL` is set to the published HTTPS GitHub URL.
 
 ### Verification and CI
 
 ```bash
-python -m flake8 src tests benchmarks examples --count --show-source --statistics
+python -m flake8 src tests examples --count --show-source --statistics
 python -m pytest -ra --strict-config --strict-markers
 PYTHONPATH=src python examples/solve_modular.py
-python benchmarks/validate_literature.py
 ```
 
 GitHub Actions runs checks on push/PR across Python 3.10, 3.12 and 3.14, followed
@@ -332,8 +328,7 @@ by container health and calculation smoke tests. Verification covers geometry
 derivatives, valve periodicity, nozzle choking/reversal, mixed boundary
 composition, closed-gas invariants, CoolProp derivative/entropy consistency,
 Otto analytic efficiency, legacy compatibility, and topology-aware UI behavior.
-Companion Brayton/Rankine reference comparisons are not experimental validation
-of the engine models. Calibration against measured engines remains future work.
+Calibration against measured engines remains future work.
 
 ## Future Work & Applications
 
@@ -359,5 +354,5 @@ not establish emissions, mechanical durability, or production-engine performance
 
 [MIT License](LICENSE). Record the source commit, dependency versions, complete
 configuration and model assumptions when using results in research. There is
-no assigned software DOI or institutional endorsement. Historical companion
-laboratory documentation is preserved in [docs/real-fluid-laboratory.md](docs/real-fluid-laboratory.md).
+no assigned software DOI or institutional endorsement. The steady-state cycle laboratory is now a separate project:
+[Thermo Cycles](https://github.com/1844514356zjc-dev/thermo-cycles).

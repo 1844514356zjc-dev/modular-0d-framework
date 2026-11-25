@@ -39,17 +39,14 @@ jobs:
       - name: Install all test, UI, and benchmark dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -c requirements/validation-constraints.txt -e '.[dev,ui,benchmark]'
+          python -m pip install -c requirements/validation-constraints.txt -e '.[dev,ui]'
           python -m pip check
       - name: Check PEP 8 with Flake8
-        run: python -m flake8 src tests benchmarks examples --count --show-source --statistics
+        run: python -m flake8 src tests examples --count --show-source --statistics
       - name: Run thermodynamics and dashboard tests
         run: python -m pytest -ra --strict-config --strict-markers --junitxml=junit.xml
-      - name: Compare independent reference cases
-        shell: bash
-        run: |
-          python benchmarks/validate_literature.py | tee benchmark-results.md
-          cat benchmark-results.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Verify modular composition examples
+        run: PYTHONPATH=src python examples/solve_modular.py
 
   docker:
     name: Container build and smoke test
@@ -69,7 +66,7 @@ jobs:
         run: curl --fail --silent --show-error http://127.0.0.1:8501/_stcore/health
       - name: Exercise engine and scavenging calculation inside the container
         run: |
-          docker compose exec -T thermo-cycles python - <<'PYCODE'
+          docker compose exec -T modular-0d-framework python - <<'PYCODE'
           from ui.engine_dashboard import EngineSettings, simulate
           for settings in (
               EngineSettings(),
@@ -85,22 +82,6 @@ jobs:
                   assert 0 < result["metrics"]["eta_sc"] <= 1
               print(settings.topology, result["work_J"])
           PYCODE
-      - name: Exercise real-fluid calculations inside the container
-        run: |
-          docker compose exec -T thermo-cycles python - <<'PY'
-          from core.cycle_solver import (
-              BraytonConfig, RankineConfig, solve_brayton, solve_rankine,
-          )
-          for function, config in (
-              (solve_brayton, BraytonConfig()),
-              (solve_rankine, RankineConfig()),
-          ):
-              result = function(config, points=20, include_saturation=False)
-              assert 0.0 < result.thermal_efficiency < 1.0
-              assert abs(result.energy_residual) < 1e-6
-              assert abs(result.exergy_residual) < 1e-6
-              print(config.fluid, result.thermal_efficiency)
-          PY
       - name: Show service logs
         if: always()
         run: docker compose logs --no-color

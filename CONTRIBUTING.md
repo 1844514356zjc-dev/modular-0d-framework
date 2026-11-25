@@ -9,11 +9,10 @@ GitHub can discover `.github/workflows/ci.yml`.
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-python -m pip install -c requirements/validation-constraints.txt -e '.[dev,ui,benchmark]'
-python -m flake8 src tests benchmarks examples
-python -m ruff check src tests benchmarks examples
+python -m pip install -c requirements/validation-constraints.txt -e '.[dev,ui]'
+python -m flake8 src tests examples
+python -m ruff check src tests examples
 python -m pytest -q
-python benchmarks/validate_literature.py
 ```
 
 On Windows, activate with `.venv\Scripts\Activate.ps1` in PowerShell.
@@ -52,7 +51,7 @@ uv pip compile pyproject.toml --extra ui \
 
 Review `requirements/docker.in` before changing direct pins. For deliberate
 transitive updates, add `--upgrade` to the compilation command. Re-run all tests,
-the reference comparison, and `docker compose up --build --wait` after updates.
+the modular composition examples, and `docker compose up --build --wait` after updates.
 The base image tracks the Python 3.10 Debian Bookworm maintenance tag; the image
 is not claimed to be bit-for-bit reproducible across base-image updates.
 

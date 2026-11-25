@@ -2,6 +2,8 @@
 
 [中文](README.zh-CN.md) · [English](README.md) · [日本語](README.ja.md) · [Deutsch](README.de.md)
 
+Dieses Repository enthält ausschließlich dynamische Motor- und Gaswechselmodelle. Stationäre Brayton-/Rankine-Prozesse und Exergieanalysen werden separat in [Thermo Cycles](https://github.com/1844514356zjc-dev/thermo-cycles) gepflegt.
+
 **Komponierbare nulldimensionale Thermodynamik, Mechanismen mit veränderlichem Volumen und Gaswechselmodelle für die Forschung an mechanischen und thermischen Systemen.**
 
 Python 3.10+ · NumPy / SciPy · CoolProp · Streamlit / Plotly · MIT-Lizenz
@@ -16,7 +18,6 @@ Das Framework berechnet ein homogenes gasförmiges Kontrollvolumen. Mechanismen,
 - **Austauschbare Wärmequellen:** Unterstützt werden normierte periodische Wiebe-Wärmefreisetzung, kein Wärmeeintrag und vorzeichenbehaftete isochore Otto-Wärmeimpulse. Eigene Quellen implementieren `heat_release(theta) -> J/rad`.
 - **Erhaltungsdiagnostik:** Implizite `Radau`-/`BDF`-Integration, Überwachung der Druckkonsistenz mit der Zustandsgleichung, vorzeichenbehaftete Massenströme und zusammen mit dem Zustand integrierte Wärme-, Arbeits- und Enthalpiesummen.
 - **Interaktive Forschungsoberfläche:** Topologiespezifische Eingaben, phasenaufgelöste Diagramme, SI-Hoverwerte, doppelt logarithmische P–V-Achsen, Drehzahl-/Verdichtungsverhältnisstudien und zum Berechnungssnapshot passende CSV-/JSON-Exporte.
-- **Ergänzende Realfluid-Kreisprozesse:** Das bestehende CoolProp-Labor für Brayton- und Rankine-Prozesse bleibt über `src/ui/real_fluid_app.py` verfügbar.
 
 ![Dashboard des modularen Frameworks](engine-dashboard.png)
 
@@ -169,13 +170,10 @@ src/
 │   ├── working_fluids.py    # Property ABC, IdealGas, CoolPropGas, EOS snapshots
 │   ├── heat_models.py       # Heat-source protocol, Wiebe/Otto/no-heat, Woschni
 │   ├── engine_solver.py     # EngineConfig, shared EngineSimulator, legacy API
-│   ├── scavenging_model.py  # Standalone geometry and species metrics
-│   └── cycle_solver.py      # Companion CoolProp Brayton/Rankine calculations
+│   └── scavenging_model.py  # Standalone geometry and species metrics
 └── ui/
     ├── app.py               # English topology-dependent Streamlit controls
-    ├── engine_dashboard.py  # Composition factory, tracer, plots, reports
-    ├── real_fluid_app.py    # Preserved companion-cycle interface
-    └── dashboard.py         # Companion-cycle plots and reporting
+    └── engine_dashboard.py  # Composition factory, tracer, plots, reports
 ```
 
 Der Kern importiert weder Streamlit noch Plotly. `EngineSimulator` akzeptiert `EngineConfig`-Objekte oder verschachtelte SI-Dictionaries; Komponenten können auch direkt aufgebaut werden. `OpposedPistonEngineCycle` und die ursprüngliche `Port`-API bleiben als Adapter des gemeinsamen Solvers erhalten.
@@ -231,7 +229,7 @@ docker compose down
 python3.10 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
-python -m pip install -c requirements/validation-constraints.txt -e '.[ui,dev,benchmark]'
+python -m pip install -c requirements/validation-constraints.txt -e '.[ui,dev]'
 python -m streamlit run src/ui/app.py
 ```
 
@@ -243,15 +241,14 @@ Drehzahl- oder Verdichtungsverhältnisstudien berechnen 2–12 unabhängige Fäl
 
 CSV-Spalten enthalten Einheiten. JSON enthält Topologie, Stoffmodell, Anfangszustand, Annahmen, kumulierte Energiebilanzen, Auswertungsgrenzen für die Gaszusammensetzung und passende Studienmetadaten. Ein Download startet die numerische Simulation nicht erneut.
 
-Wird `GITHUB_REPOSITORY_URL` auf die veröffentlichte HTTPS-Adresse des Repositories gesetzt, verlinkt das GitHub-Element im Seitenkopf dorthin. Ohne diese Variable bleibt es statisch. Die separate Realfluid-Anwendung startet mit `python -m streamlit run src/ui/real_fluid_app.py`.
+[Thermo Cycles — Brayton / Rankine](https://github.com/1844514356zjc-dev/thermo-cycles)
 
 ### Verifikation und CI
 
 ```bash
-python -m flake8 src tests benchmarks examples --count --show-source --statistics
+python -m flake8 src tests examples --count --show-source --statistics
 python -m pytest -ra --strict-config --strict-markers
 PYTHONPATH=src python examples/solve_modular.py
-python benchmarks/validate_literature.py
 ```
 
 GitHub Actions führt bei Push und Pull Request Prüfungen für Python 3.10, 3.12 und 3.14 aus, anschließend Zustands- und Berechnungs-Smoke-Tests des Containers. Die Verifikation umfasst Geometrieableitungen, Ventilperiodizität, Düsenblockierung und Rückströmung, kombinierte Randbedingungen, Invarianten geschlossener Gase, CoolProp-Ableitungen und Entropiekonsistenz, analytischen Otto-Wirkungsgrad, Kompatibilität älterer Schnittstellen und topologiespezifisches UI-Verhalten.
@@ -276,4 +273,6 @@ Anwendungen sind Thermodynamiklehre, Vorstudien zu Motoren und Gaswechsel, offen
 4. MIT 2.61, [Gas Exchange Processes](https://web.mit.edu/2.61/www/Lecture%20notes/Lec.%2008%20Gas%20exchange%20processes.pdf).
 5. CoolProp, [Low-Level API and thermodynamic derivatives](https://coolprop.org/coolprop/LowLevelAPI.html).
 
-[MIT-Lizenz](LICENSE). Bei wissenschaftlicher Nutzung sind Quellcode-Commit, Abhängigkeitsversionen, vollständige Konfiguration und Modellannahmen zu dokumentieren. Es gibt weder eine zugewiesene Software-DOI noch eine institutionelle Bestätigung. Historische Unterlagen zum ergänzenden Labor bleiben in [docs/real-fluid-laboratory.md](docs/real-fluid-laboratory.md) erhalten.
+[Thermo Cycles — Brayton / Rankine](https://github.com/1844514356zjc-dev/thermo-cycles)
+
+[MIT License](LICENSE) · [Project separation](docs/project-separation.md)
