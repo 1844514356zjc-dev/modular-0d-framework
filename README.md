@@ -2,9 +2,8 @@
 
 [中文](README.zh-CN.md) · [English](README.md) · [日本語](README.ja.md) · [Deutsch](README.de.md)
 
-This repository contains dynamic engine and gas-exchange models only.
-Steady-state Brayton/Rankine and exergy analysis are maintained separately in
-[Thermo Cycles](https://github.com/1844514356zjc-dev/thermo-cycles).
+> [!NOTE]
+> **Repository scope & relationship to `thermo-cycles`:** This repository focuses on composable 0D engine and transient cycle simulation (dynamic moving-volume mechanisms, gas exchange, and control-volume integration). Steady-state real-fluid Brayton/Rankine cycles and exergy analysis are maintained separately in [Thermo Cycles](https://github.com/1844514356zjc-dev/thermo-cycles) (see [project separation notes](docs/project-separation.md)).
 
 **Composable thermodynamics, moving-volume mechanisms, and gas-exchange models
 for mechanical and thermal-system research.**
@@ -39,7 +38,7 @@ without changing the core equations.
   plots, SI hover values, log P–V axes, RPM/compression-ratio studies, and
   snapshot-consistent CSV/JSON exports.
 
-![Modular framework dashboard](engine-dashboard.png)
+![Modular framework dashboard](docs/images/engine-dashboard.png)
 
 ### Supported presets and scope
 

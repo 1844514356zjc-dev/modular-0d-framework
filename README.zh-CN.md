@@ -2,7 +2,8 @@
 
 [中文](README.zh-CN.md) · [English](README.md) · [日本語](README.ja.md) · [Deutsch](README.de.md)
 
-本仓库仅包含动态发动机与气体交换模型。稳态布雷顿/朗肯循环与㶲分析位于独立仓库 [Thermo Cycles](https://github.com/1844514356zjc-dev/thermo-cycles)。
+> [!NOTE]
+> **仓库定位及与 `thermo-cycles` 的边界：** 本仓库专注于可组合零维发动机与瞬态循环仿真（动态变容积机构、气体交换及控制体积分）。稳态真实流体布雷顿/朗肯循环与㶲分析位于独立兄弟仓库 [Thermo Cycles](https://github.com/1844514356zjc-dev/thermo-cycles)（详见 [项目分离说明](docs/project-separation.md)）。
 
 **面向机械与热系统科研的可组合零维热力学、变容积机构与气体交换仿真框架。**
 
@@ -19,7 +20,7 @@ Python 3.10+ · NumPy / SciPy · CoolProp · Streamlit / Plotly · MIT 许可证
 - **守恒诊断**：使用隐式 `Radau` / `BDF` 积分，监测压力与状态方程的一致性；带符号的通道流量及累计热量、功、焓交换与物理状态同步积分。
 - **交互式科研工作台**：按拓扑展示控件、相位分辨曲线、SI 悬停数据、双对数 P–V 图、转速/压缩比扫描，以及与计算快照一致的 CSV / JSON 导出。
 
-![模块化仿真工作台](engine-dashboard.png)
+![模块化仿真工作台](docs/images/engine-dashboard.png)
 
 ### 支持的预设与适用边界
 
