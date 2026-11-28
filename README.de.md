@@ -19,7 +19,7 @@ Das Framework berechnet ein homogenes gasförmiges Kontrollvolumen. Mechanismen,
 - **Erhaltungsdiagnostik:** Implizite `Radau`-/`BDF`-Integration, Überwachung der Druckkonsistenz mit der Zustandsgleichung, vorzeichenbehaftete Massenströme und zusammen mit dem Zustand integrierte Wärme-, Arbeits- und Enthalpiesummen.
 - **Interaktive Forschungsoberfläche:** Topologiespezifische Eingaben, phasenaufgelöste Diagramme, SI-Hoverwerte, doppelt logarithmische P–V-Achsen, Drehzahl-/Verdichtungsverhältnisstudien und zum Berechnungssnapshot passende CSV-/JSON-Exporte.
 
-![Dashboard des modularen Frameworks](engine-dashboard.png)
+![Dashboard des modularen Frameworks](docs/images/engine-dashboard.png)
 
 ### Voreinstellungen und Gültigkeitsbereich
 

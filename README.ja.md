@@ -19,7 +19,7 @@ Python 3.10+ · NumPy / SciPy · CoolProp · Streamlit / Plotly · MIT License
 - **保存則の診断**：陰解法 `Radau` / `BDF`、圧力と状態方程式の整合性監視、符号付き流量、物理状態と同時積分される累積熱量・仕事・エンタルピー交換を備えます。
 - **対話的な研究環境**：トポロジー別の操作、位相分解プロット、SI のホバー値、両対数 P–V 図、回転数・圧縮比スキャン、計算スナップショットと整合する CSV / JSON 出力を提供します。
 
-![モジュール式シミュレーションのダッシュボード](engine-dashboard.png)
+![モジュール式シミュレーションのダッシュボード](docs/images/engine-dashboard.png)
 
 ### 対応プリセットと適用範囲
 
